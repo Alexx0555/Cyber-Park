@@ -80,34 +80,6 @@
       </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-      <div class="container">
-        <h2 class="section-title">What Our Users Say</h2>
-        <div class="testimonials-container">
-          <div class="testimonial-card" v-for="testimonial in testimonials" :key="testimonial.id"
-               :class="{ active: currentTestimonial === testimonial.id }">
-            <div class="testimonial-content">
-              <p>"{{ testimonial.content }}"</p>
-              <div class="testimonial-author">
-                <div class="author-avatar">{{ testimonial.avatar }}</div>
-                <div class="author-info">
-                  <h4>{{ testimonial.name }}</h4>
-                  <span>{{ testimonial.role }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-dots">
-          <button v-for="testimonial in testimonials" :key="testimonial.id"
-                  @click="currentTestimonial = testimonial.id"
-                  :class="{ active: currentTestimonial === testimonial.id }"
-                  class="testimonial-dot"></button>
-        </div>
-      </div>
-    </section>
-
     <!-- FAQ Section -->
     <section class="faq" id="faq">
       <div class="container">
