@@ -1,0 +1,176 @@
+/* Vue Toastification Custom Theme */
+
+/* Light Theme (Default) */
+.Vue-Toastification__toast {
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.Vue-Toastification__toast--success {
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  color: white;
+}
+
+.Vue-Toastification__toast--error {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+}
+
+.Vue-Toastification__toast--warning {
+  background: linear-gradient(135deg, #feca57, #ff9ff3);
+  color: white;
+}
+
+.Vue-Toastification__toast--info {
+  background: linear-gradient(135deg, #45b7d1, #96ceb4);
+  color: white;
+}
+
+.Vue-Toastification__progress-bar {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.Vue-Toastification__close-button {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.Vue-Toastification__close-button:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Dark Theme */
+.homepage.dark-mode .Vue-Toastification__toast,
+.dark-mode .Vue-Toastification__toast {
+  background: rgba(42, 42, 42, 0.95);
+  color: #e0e0e0;
+  border: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+.homepage.dark-mode .Vue-Toastification__toast--success,
+.dark-mode .Vue-Toastification__toast--success {
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.9), rgba(68, 160, 141, 0.9));
+  border: 1px solid rgba(78, 205, 196, 0.5);
+}
+
+.homepage.dark-mode .Vue-Toastification__toast--error,
+.dark-mode .Vue-Toastification__toast--error {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(238, 90, 82, 0.9));
+  border: 1px solid rgba(255, 107, 107, 0.5);
+}
+
+.homepage.dark-mode .Vue-Toastification__toast--warning,
+.dark-mode .Vue-Toastification__toast--warning {
+  background: linear-gradient(135deg, rgba(254, 202, 87, 0.9), rgba(255, 159, 243, 0.9));
+  border: 1px solid rgba(254, 202, 87, 0.5);
+}
+
+.homepage.dark-mode .Vue-Toastification__toast--info,
+.dark-mode .Vue-Toastification__toast--info {
+  background: linear-gradient(135deg, rgba(69, 183, 209, 0.9), rgba(150, 206, 180, 0.9));
+  border: 1px solid rgba(69, 183, 209, 0.5);
+}
+
+.homepage.dark-mode .Vue-Toastification__progress-bar,
+.dark-mode .Vue-Toastification__progress-bar {
+  background: rgba(78, 205, 196, 0.6);
+}
+
+.homepage.dark-mode .Vue-Toastification__close-button,
+.dark-mode .Vue-Toastification__close-button {
+  color: rgba(224, 224, 224, 0.8);
+}
+
+.homepage.dark-mode .Vue-Toastification__close-button:hover,
+.dark-mode .Vue-Toastification__close-button:hover {
+  color: #4ecdc4;
+}
+
+/* Container positioning */
+.Vue-Toastification__container {
+  z-index: 10000;
+}
+
+/* Animation improvements */
+.Vue-Toastification__bounce-enter-active {
+  animation: Vue-Toastification__bounceIn 0.5s ease-out;
+}
+
+.Vue-Toastification__bounce-leave-active {
+  animation: Vue-Toastification__bounceOut 0.3s ease-in;
+}
+
+@keyframes Vue-Toastification__bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes Vue-Toastification__bounceOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50px);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .Vue-Toastification__toast {
+    margin: 0 1rem;
+    border-radius: 8px;
+  }
+  
+  .Vue-Toastification__container.top-right,
+  .Vue-Toastification__container.top-left {
+    top: 1rem;
+  }
+  
+  .Vue-Toastification__container.bottom-right,
+  .Vue-Toastification__container.bottom-left {
+    bottom: 1rem;
+  }
+}
+
+/* Icon styling */
+.Vue-Toastification__icon {
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+}
+
+/* Custom toast content styling */
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toast-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.toast-message {
+  font-weight: 400;
+  opacity: 0.9;
+}

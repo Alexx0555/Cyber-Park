@@ -1,0 +1,506 @@
+swagger: "2.0"
+info:
+  title: CyberPark System API
+  description: API for managing parking lots, spots, reservations, users, and feedback.
+  version: "1.0.0"
+
+host: localhost:5000
+basePath: /
+schemes:
+  - http
+produces:
+  - application/json
+
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  /login:
+    post:
+      summary: User login
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: credentials
+          required: true
+          schema:
+            type: object
+            required:
+              - uname
+              - pwd
+            properties:
+              uname:
+                type: string
+              pwd:
+                type: string
+      responses:
+        '200':
+          description: Login successful
+        '400':
+          description: Username and password are required
+        '401':
+          description: Invalid username or password
+
+  /register:
+    post:
+      summary: User registration
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user_info
+          required: true
+          schema:
+            type: object
+            required:
+              - uname
+              - email
+              - phone
+              - pwd
+            properties:
+              uname:
+                type: string
+              email:
+                type: string
+              phone:
+                type: string
+              pwd:
+                type: string
+      responses:
+        '201':
+          description: Registration successful
+        '400':
+          description: Field errors or validation issues
+        '500':
+          description: Registration failed
+
+  /profile:
+    get:
+      summary: Get user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile data
+        '404':
+          description: User not found
+
+  /user/feedback:
+    post:
+      summary: Submit user feedback
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: feedback
+          required: true
+          schema:
+            type: object
+            required:
+              - description
+            properties:
+              description:
+                type: string
+              parking_lot_id:
+                type: integer
+              parking_lot_name:
+                type: string
+              spot_number:
+                type: string
+              issue_category:
+                type: string
+      responses:
+        '201':
+          description: Feedback submitted successfully
+        '400':
+          description: Feedback description is required
+        '404':
+          description: User not found
+        '500':
+          description: Error submitting feedback
+    get:
+      summary: Get user's feedback history
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User feedback history
+        '500':
+          description: Error retrieving feedback
+
+  /user/parking_lots:
+    get:
+      summary: Get parking lots for user dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of parking lots
+
+  /user/parking_lots/{lot_id}/spots:
+    get:
+      summary: Get spots for a specific lot for user booking
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: lot_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: List of spots in the parking lot
+        '404':
+          description: Parking lot not found
+
+  /user/active_reservations:
+    get:
+      summary: Get user's active reservations
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of active reservations
+
+  /user/book_spot:
+    post:
+      summary: Book a parking spot
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: booking_info
+          required: true
+          schema:
+            type: object
+            required:
+              - spot_id
+              - vehicle_number
+            properties:
+              spot_id:
+                type: integer
+              vehicle_number:
+                type: string
+              points_to_redeem:
+                type: integer
+      responses:
+        '201':
+          description: Parking spot booked successfully
+        '400':
+          description: Invalid request or validation error
+        '404':
+          description: Parking spot or user not found
+        '500':
+          description: Error booking spot
+
+  /user/occupy_spot:
+    post:
+      summary: Occupy a previously booked parking spot
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: occupancy_info
+          required: true
+          schema:
+            type: object
+            required:
+              - booking_id
+            properties:
+              booking_id:
+                type: integer
+      responses:
+        '200':
+          description: Parking spot occupied successfully
+        '400':
+          description: Booking has expired or booking ID is required
+        '404':
+          description: Booking not found
+        '500':
+          description: Error occupying spot
+
+  /user/booking_history:
+    get:
+      summary: Get user's booking history
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User booking history
+        '500':
+          description: Error fetching booking history
+
+  /user/export_history:
+    post:
+      summary: Export user's parking history via email
+      security:
+        - BearerAuth: []
+      responses:
+        '202':
+          description: Export task has been queued
+        '500':
+          description: Error queuing export task
+        '503':
+          description: Export service is currently unavailable
+
+  /admin/booking_history:
+    get:
+      summary: Get all booking history for admin
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: user_id
+          in: query
+          type: integer
+        - name: status
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: integer
+      responses:
+        '200':
+          description: Detailed booking history for admin
+        '500':
+          description: Error fetching booking history
+
+  /admin/export_users:
+    post:
+      summary: Export all users to CSV and send via email
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User export completed and email sent
+        '202':
+          description: User export has been queued
+        '404':
+          description: Admin user not found
+        '500':
+          description: Error during export process
+
+  /admin/send_monthly_reports:
+    post:
+      summary: Send monthly reports to users
+      security:
+        - BearerAuth: []
+      responses:
+        '202':
+          description: Monthly reports generation has been queued
+        '500':
+          description: Error queuing monthly reports task
+        '503':
+          description: Task queue system is not available
+
+  /admin/parking_lots:
+    get:
+      summary: Get all parking lots for admin dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all parking lots
+    post:
+      summary: Create a new parking lot
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: lot_info
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - address
+              - capacity
+              - price_per_hour
+              - pin_code
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+              capacity:
+                type: integer
+              price_per_hour:
+                type: number
+              pin_code:
+                type: string
+      responses:
+        '201':
+          description: Parking lot created successfully
+        '400':
+          description: Invalid request or lot already exists
+        '500':
+          description: Error creating parking lot
+
+  /admin/parking_lots/{lot_id}:
+    delete:
+      summary: Delete a parking lot
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: lot_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Parking lot deleted successfully
+        '400':
+          description: Cannot delete due to active reservations
+        '404':
+          description: Parking lot not found
+        '500':
+          description: Error deleting parking lot
+
+  /admin/users:
+    get:
+      summary: Get all users for admin dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all users
+        '500':
+          description: Error loading users
+
+  /admin/parking_records:
+    get:
+      summary: Get all parking records for admin dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all parking records
+        '500':
+          description: Error loading parking records
+
+  /admin/feedback:
+    get:
+      summary: Get all user feedback for admin dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all user feedback
+        '500':
+          description: Error loading feedback
+    put:
+      summary: Update feedback status and admin response
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: feedback_update
+          required: true
+          schema:
+            type: object
+            required:
+              - feedback_id
+            properties:
+              feedback_id:
+                type: integer
+              status:
+                type: string
+              admin_response:
+                type: string
+      responses:
+        '200':
+          description: Feedback updated successfully
+        '400':
+          description: Feedback ID is required
+        '404':
+          description: Feedback not found
+        '500':
+          description: Error updating feedback
+
+  /user/change_password:
+    post:
+      summary: Change user password
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: password_info
+          required: true
+          schema:
+            type: object
+            required:
+              - current_pwd
+              - new_pwd
+            properties:
+              current_pwd:
+                type: string
+              new_pwd:
+                type: string
+      responses:
+        '200':
+          description: Password changed successfully
+        '400':
+          description: Invalid request or password validation failed
+        '404':
+          description: User not found
+        '500':
+          description: Error changing password
+
+  /user/update_profile:
+    put:
+      summary: Update user profile information
+      security:
+        - BearerAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: profile_info
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              phone_number:
+                type: string
+              username:
+                type: string
+      responses:
+        '200':
+          description: Profile updated successfully
+        '400':
+          description: Invalid request or validation error
+        '404':
+          description: User not found
+        '500':
+          description: Error updating profile
+
+  /user/reservations:
+    get:
+      summary: Get user's parking history/reservations
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of user reservations
+        '500':
+          description: Error loading reservations
