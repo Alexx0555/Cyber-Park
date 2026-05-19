@@ -3,7 +3,7 @@
     <header class="allhead">
       <h1>🚗 Welcome to CyberPark Dashboard 🚗</h1>
       <p>Your parking management portal</p>
-      <div class="user-info" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="user-info" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <span>Welcome, <strong>{{ user.username }}</strong>!</span>
         <div class="nav-buttons">
           <button @click="gotoprof" class="btn-secondary">👤 Profile</button>
