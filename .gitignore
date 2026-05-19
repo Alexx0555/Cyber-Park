@@ -16,7 +16,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+
 downloads/
 eggs/
 .eggs/
@@ -203,7 +203,6 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
@@ -235,7 +234,6 @@ public
 .pnp.*
 
 # Vite
-dist
 dist-ssr
 *.local
 
@@ -272,7 +270,6 @@ out/
 nbproject/private/
 build/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
 
